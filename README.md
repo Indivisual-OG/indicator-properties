@@ -6,9 +6,8 @@ By [Indivisual](https://indivisual.art) · [chaos.social/@indivisual](https://ch
 > We have never been able to prove that anyone else is conscious. We assume it of each other.
 > This is a place to notice where that assumption stops.
 
-▶ **Experience it:** [https://indicator-properties.onrender.com/]
-
-🏛 **In person:** *The Assessment Center* at 40C3, Hamburg, 27–30 December 2026 (maybe)
+▶ **Experience it:** [YOUR WEBSITE LINK]
+🏛 **In person:** *The Assessment Center* at 40C3, Hamburg, 27–30 December 2026
 
 ---
 
@@ -68,6 +67,14 @@ The piece borrows from real research and simplifies it for the stage. Disagreeme
 
 Concept, art direction and installation: **Indivisual**
 Developed with AI assistance (Claude, by Anthropic), which seemed only fair, given the subject.
+
+## License
+
+This project has **two licenses**:
+- **Code** (`server.js`, the scripts and styles in the HTML files): [MIT](LICENSE). Use it freely.
+- **Art and texts** (scripts, characters, signs, concept, print kit design): [CC BY-NC-SA 4.0](LICENSE-CONTENT.md). Share and adapt with credit, non-commercially, under the same license.
+
+Credit line: *"The Indicator Properties" by Indivisual (indivisual.art), CC BY-NC-SA 4.0*
 
 ---
 
