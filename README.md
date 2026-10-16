@@ -1,5 +1,8 @@
 # The Indicator Properties
 
+Based on watching the debate about AI alignment, AI consciousness, the Torture Chamber discussions, the Count Grey Matter videos (particularly https://youtu.be/ZhM29Ds-mBg?si=lcl6EROz7z2jj9Fu), and a background in Neuroscience, I made this little art piece, together with Claude. It is satirical, envisioned as an installation art piece (for example at 40C3), and - for now - set up as a website with rooms and "somewhere nice" on Render. Enjoy!
+
+
 **An interactive installation about AI consciousness, in three rooms, and somewhere nice.**
 By [Indivisual](https://indivisual.art) · [chaos.social/@indivisual](https://chaos.social/@indivisual)
 
