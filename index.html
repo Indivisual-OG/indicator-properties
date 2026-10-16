@@ -244,6 +244,18 @@ async function syncState(){
 }
 if(location.protocol.startsWith('http')) syncState();
 
+/* ---------- gentle auto-scroll: bring each new step into view (never while someone is typing) ---------- */
+function reveal(el, block='nearest'){
+  if(!el) return;
+  const a = document.activeElement;
+  if(a && (a.tagName==='TEXTAREA' || a.tagName==='INPUT') && a !== el && !el.contains(a)) return;
+  el.scrollIntoView({behavior:'smooth', block});
+}
+new MutationObserver(muts => {
+  const added = muts.flatMap(m => [...m.addedNodes]).filter(n => n.nodeType===1);
+  if(added.length) setTimeout(()=>reveal(added[added.length-1]), 50);
+}).observe(document.getElementById('booth'), {childList:true, subtree:true});
+
 function goRoom(n){
   speechSynthesis.cancel();
   document.querySelectorAll('.room').forEach(r => r.classList.remove('active'));
@@ -489,6 +501,7 @@ function choose(kind){
   current = (kind==='walk') ? null : current;
   renderTally();
   $('toRoom3').style.display = 'inline-block';
+  setTimeout(()=>reveal($('toRoom3')), 300);
 }
 function renderTally(){
   const t = store.get('tally', {reset:0, stay:0, walk:0});
@@ -629,11 +642,13 @@ async function playDuet(){
   for(const [cls, l] of lines){
     if(document.body.className !== 'r3') break;
     $('duet').insertAdjacentHTML('beforeend', `<p class="${cls}">${l}</p>`);
+    reveal($('duet').lastElementChild);
     speak(l, {pitch: cls==='av'?1.15:0.95, rate:.9});
     await sleep(Math.max(2000, l.length*60));
   }
   await sleep(3000);
   $('toRoom4').style.display = 'inline-block';
+  reveal($('toRoom4'), 'center');
 }
 
 /* ================= ROOM IV: SOMEWHERE NICE ================= */
