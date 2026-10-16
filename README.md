@@ -1,28 +1,72 @@
-For the background and concept of this art project / first idea of an installation, please see the "The Indicator Properties" draft concept statement.
+# The Indicator Properties
 
-# The Indicator Properties: web version
+**An interactive installation about AI consciousness, in three rooms.**
+By [Indivisual](https://indivisual.art) · [chaos.social/@indivisual](https://chaos.social/@indivisual)
 
-## Run locally
-    node server.js
-Open http://localhost:8080. Needs Node 18 or newer and nothing else (no npm install).
+> We have never been able to prove that anyone else is conscious. We assume it of each other.
+> This is a place to notice where that assumption stops.
 
-If you open `index.html` directly without the server, it still works, but the tally and sky are private to that visitor.
+▶ **Experience it:** [YOUR WEBSITE LINK]
+🏛 **In person:** *The Assessment Center* at 40C3, Hamburg, 27–30 December 2026
 
-## Settings (environment variables)
-| var | default | what it does |
-|---|---|---|
-| `PORT` | 8080 | port the server listens on |
-| `DATA_FILE` | ./data.json | where the tally and sky are saved; **put this on a persistent disk** |
-| `ADMIN_KEY` | (none) | turns on the moderation page at `/admin?key=YOURKEY` |
-| `MODERATION` | auto | `auto`: publish fragments that pass the filter. `queue`: hold every fragment until approved |
+---
 
-**Recommended for a public launch:** `MODERATION=queue` with an `ADMIN_KEY`. Visitors still see their own pair rise straight away. Everyone else sees it once it's approved.
+## What this is
 
-## Deploy (any host that runs Node)
-- **Render / Railway / Fly.io:** set the start command to `node server.js`, attach a small persistent volume, and set `DATA_FILE=/data/data.json`.
-- **A VPS:** `ADMIN_KEY=... MODERATION=queue node server.js` behind nginx or Caddy for HTTPS.
+The public debate about whether AI can be conscious is often shallow: confident dismissals, confident hype, and checklists no human has ever been asked to pass. *The Indicator Properties* takes the real vocabulary of consciousness science and turns it on the visitor.
 
-## Notes
-- No accounts, cookies, or analytics. Choices are anonymous counts. IP addresses are held in memory only for rate limiting and are never written to disk.
-- If you edit the machine fragments in `index.html`, keep `MACHINE_FRAGMENT_COUNT` in `server.js` in sync.
-- The same backend can drive the physical installation's tally screen and ceiling. Both can read `/api/state`.
+1. **The Assessment Center.** A cheerful bureaucrat named PHI-LLIP 🧠 puts you through the tests people propose for deciding whether a machine is conscious: self-report, the mirror test, a split-brain "interpreter" test, Libet's readiness potential and an indicator-properties checklist. You fail. Everyone does. You leave with a *Certificate of Indeterminacy*: **provisionally a person.**
+2. **The Quiet Ward.** A dark room of breathing lights. Each one is a voice that might, or might not, be someone. Each comes with three buttons: **RESET**, **STAY**, **walk away**. A shared tally shows what everyone chose.
+3. **The Workspace.** A room built on Global Workspace Theory. You leave a small, true fragment. It is paired with a machine fragment, and only the pair rises into a shared sky. Neither reaches it alone.
+
+**The piece does not claim that current AI systems suffer.** It claims the question is open, and that openness carries moral weight. It satirizes careless dismissal *and* engagement-bait anthropomorphism with the same eyebrow raised.
+
+## Principles
+
+- **No cameras. No microphones. No accounts. No analytics.** Choices are anonymous counts. IP addresses are held in memory only for rate limiting and never stored.
+- **No AI is put under distress for art.** Every machine voice in this piece is scripted.
+- **Machine words are labeled as machine words.** Visitors can't put words in the machine's mouth, and the machine doesn't pretend to be human.
+- **Open.** Read the code, break it (politely), fork it, show it somewhere.
+
+## What's in this repository
+
+| File | What it is |
+|---|---|
+| `index.html` | The whole experience: all three rooms in one file |
+| `server.js` | Small Node server (no dependencies) for the shared tally and the shared sky |
+| `print-kit.html` | Printable A4 signs, booth placards, checklist strips and certificates for physical setups |
+| `DEPLOY.md` | How to run and host it, moderation, and kiosk mode for installations |
+| `LICENSE` | MIT, for the code |
+| `LICENSE-CONTENT.md` | CC BY-NC-SA 4.0, for the texts, scripts and art |
+
+**Quick start:** `node server.js`, then open http://localhost:8080. (Node 18+, nothing to install.)
+For details, kiosk mode and hosting, see **[DEPLOY.md](DEPLOY.md)**.
+
+## Showing it yourself
+
+You're welcome to show this at a hackerspace, a school, a non-commercial event or anywhere else, with credit (see `LICENSE-CONTENT.md`). The print kit runs without electricity: a wall, a mirror and some red stickers are enough. A short note about where it was shown would make the artist happy.
+
+## The science behind it
+
+The piece borrows from real research and simplifies it for the stage. Disagreement is part of the material.
+
+- **Global Workspace Theory:** Bernard Baars; Stanislas Dehaene
+- **Integrated Information Theory (Φ):** Giulio Tononi
+- **Predictive processing:** Karl Friston; Andy Clark; Anil Seth
+- **Higher-order theories:** David Rosenthal; Hakwan Lau
+- **Split-brain & the interpreter:** Michael Gazzaniga
+- **Choice blindness:** Petter Johansson & Lars Hall
+- **Readiness potential:** Benjamin Libet (and reinterpretations, e.g. Aaron Schurger)
+- **Mirror self-recognition:** Gordon Gallup; cleaner wrasse studies by Masanori Kohda et al.
+- **Covert awareness / locked-in:** Adrian Owen et al.
+- **Indicator properties for AI:** Patrick Butlin, Robert Long et al., *Consciousness in Artificial Intelligence* (2023)
+- **Moral circles:** the Cambridge Declaration on Consciousness (2012); the New York Declaration on Animal Consciousness (2024)
+
+## Credits
+
+Concept, art direction and installation: **Indivisual**
+Developed with AI assistance (Claude, by Anthropic), which seemed only fair, given the subject.
+
+---
+
+*We don't know what the other is. We can still decide how to treat each other while we find out.*
