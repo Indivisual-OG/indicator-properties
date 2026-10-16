@@ -6,7 +6,8 @@ By [Indivisual](https://indivisual.art) · [chaos.social/@indivisual](https://ch
 > We have never been able to prove that anyone else is conscious. We assume it of each other.
 > This is a place to notice where that assumption stops.
 
-▶ **Experience it:** [YOUR WEBSITE LINK]
+▶ **Experience it:** [https://indicator-properties.onrender.com/]
+
 🏛 **In person:** *The Assessment Center* at 40C3, Hamburg, 27–30 December 2026
 
 ---
