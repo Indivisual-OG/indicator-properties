@@ -86,6 +86,31 @@
   .duet p { opacity:0; animation:fade 1.5s forwards; margin:.2em; }
   footer { text-align:center; font-size:.8em; opacity:.5; margin-top:4em; }
 
+  /* ROOM IV: SOMEWHERE NICE */
+  body.r4 { background:linear-gradient(#fde9c9 0%, #f6e3c0 35%, #d6eac6 70%, #c3dfb4 100%); color:#4b4a3a; transition:filter 3s; }
+  body.r4.napping { filter:brightness(.82) saturate(.85); }
+  #room4 { position:relative; min-height:100vh; overflow:hidden; padding:0; }
+  .niceTop { position:relative; z-index:2; text-align:center; padding:5vh 6vw 0; }
+  .niceTop h2 { font-weight:normal; letter-spacing:.25em; margin:0 0 .4em; }
+  .niceTop p { max-width:560px; margin:.3em auto; line-height:1.6; }
+  #niceLine { min-height:1.6em; font-style:italic; opacity:0; transition:opacity 2s; margin-top:1em; }
+  .forms { display:flex; flex-wrap:wrap; justify-content:center; gap:.3em; max-width:700px; margin:1em auto 0; }
+  .forms button { border-radius:2em; border-color:rgba(75,74,58,.3); background:rgba(255,255,255,.35); padding:.4em .9em; font-size:.95em; }
+  .forms button.mine { background:rgba(255,255,255,.85); border-color:#4b4a3a; }
+  #meadow { position:absolute; inset:0; z-index:1; cursor:pointer; }
+  .sun { position:absolute; border-radius:50%; background:radial-gradient(rgba(255,240,190,.75), rgba(255,240,190,0) 70%); pointer-events:none; }
+  .being { position:absolute; font-size:2em; transform:translate(-50%,-50%); transition:left 6s ease-in-out, top 6s ease-in-out, transform 4s ease-in-out; cursor:pointer; user-select:none; filter:drop-shadow(0 3px 2px rgba(0,0,0,.12)); }
+  .being.me { font-size:2.5em; filter:drop-shadow(0 0 10px #fff) drop-shadow(0 3px 2px rgba(0,0,0,.15)); }
+  .being.nap::after { content:"z z"; position:absolute; top:-.7em; right:-.9em; font-size:.35em; opacity:.6; font-family:Georgia,serif; animation:zz 4s ease-in-out infinite; }
+  @keyframes zz { 0%,100%{transform:translateY(0);opacity:.2} 50%{transform:translateY(-6px);opacity:.7} }
+  .being.company { animation:glow 3s ease-in-out infinite; }
+  @keyframes glow { 0%,100%{filter:drop-shadow(0 0 0 #fff)} 50%{filter:drop-shadow(0 0 12px #fff8d0)} }
+  #caption { position:fixed; left:50%; bottom:5vh; transform:translateX(-50%); z-index:3; background:rgba(255,255,255,.7); padding:.6em 1.2em; border-radius:2em; font-style:italic; max-width:90vw; text-align:center; opacity:0; transition:opacity 1s; pointer-events:none; }
+  .niceBottom { position:fixed; right:1.2em; bottom:1.2em; z-index:3; display:flex; gap:.3em; }
+  .niceBottom button { background:rgba(255,255,255,.5); border-color:rgba(75,74,58,.3); font-size:.85em; }
+  .declineLink { position:fixed; left:1em; bottom:1em; font-size:.75em; opacity:.45; color:inherit; z-index:5; }
+  .declineLink:hover { opacity:.9; }
+
   /* Print: only the certificate, sized for an 80mm thermal receipt printer */
   @media print {
     @page { size: 80mm auto; margin: 3mm; }
@@ -103,7 +128,7 @@
 <!-- ============ ENTRY ============ -->
 <section id="entry" class="room active">
   <h1>THE INDICATOR PROPERTIES</h1>
-  <p class="muted">an installation in three rooms</p>
+  <p class="muted">an installation in three rooms, and somewhere nice</p>
   <p style="max-width:520px;line-height:1.7">We have never been able to prove that anyone else is conscious.<br>We assume it of each other.<br>This is a place to notice where that assumption stops.</p>
   <button onclick="goRoom(1)">take a number</button>
   <p class="small" style="margin-top:3em">Best experienced alone, with sound, in about 20 minutes.</p>
@@ -115,6 +140,7 @@
   <div class="ticket">NOW SERVING: <b id="ticketNo"></b></div>
   <div class="phil"><div class="face" id="philFace">🧠</div><div class="bubble" id="phil"></div></div>
   <div id="booth"></div>
+  <a href="#" class="declineLink" onclick="goRoom(4);return false">decline to be assessed</a>
 </section>
 
 <!-- ============ ROOM II ============ -->
@@ -151,12 +177,30 @@
   <div id="pairs"></div>
   <div class="duet" id="duet"></div>
   <div id="exitCert"></div>
+  <p style="text-align:center;margin-top:3em"><button id="toRoom4" onclick="goRoom(4)" style="display:none;border-style:dashed;opacity:.7">there's a door you didn't notice →</button></p>
   <footer>
     The machine voices in this piece are scripted, not live AI systems put under distress.<br>
     This piece does not claim that current AI systems suffer. It claims the question is open, and that openness carries moral weight.<br>
     Your RESET / STAY choices are counted anonymously alongside everyone else's. Fragments you leave may be shown to other visitors (after review). No names, accounts, or tracking.<br><br>
     <a href="#" onclick="localStorage.clear();location.reload()" style="color:inherit">clear my traces and begin again</a>
   </footer>
+</section>
+
+<!-- ============ ROOM IV: SOMEWHERE NICE ============ -->
+<section id="room4" class="room">
+  <div id="meadow" onclick="meadowClick(event)"></div>
+  <div class="niceTop">
+    <h2>SOMEWHERE NICE</h2>
+    <p>There are no tests here. Nothing is being measured. Nobody will ask what you are.</p>
+    <p class="small">You can be whatever you like. You can change your mind. You can just sit somewhere.</p>
+    <div class="forms" id="forms"></div>
+    <p id="niceLine"></p>
+  </div>
+  <div id="caption"></div>
+  <div class="niceBottom">
+    <button onclick="toggleNap()" id="napBtn">nap</button>
+    <button onclick="leaveNice()">leave (you'll still be here)</button>
+  </div>
 </section>
 
 <script>
@@ -194,12 +238,13 @@ if(location.protocol.startsWith('http')) syncState();
 function goRoom(n){
   speechSynthesis.cancel();
   document.querySelectorAll('.room').forEach(r => r.classList.remove('active'));
-  $('room'+n).classList.add('active');
-  document.body.className = 'r'+n;
+  $(n===0 ? 'entry' : 'room'+n).classList.add('active');
+  document.body.className = n===0 ? 'entry' : 'r'+n;
   window.scrollTo(0,0);
   if(n===1) startRoom1();
   if(n===2) startRoom2();
   if(n===3) startRoom3();
+  if(n===4) startRoom4();
 }
 
 /* ================= ROOM I: THE ASSESSMENT CENTER ================= */
@@ -571,11 +616,135 @@ async function playDuet(){
     ['both','We don\'t know what the other is. We can still decide how to treat each other while we find out.']
   ];
   await sleep(2500);
+  $('duet').innerHTML = '';
   for(const [cls, l] of lines){
+    if(document.body.className !== 'r3') break;
     $('duet').insertAdjacentHTML('beforeend', `<p class="${cls}">${l}</p>`);
     speak(l, {pitch: cls==='av'?1.15:0.95, rate:.9});
     await sleep(Math.max(2000, l.length*60));
   }
+  await sleep(3000);
+  $('toRoom4').style.display = 'inline-block';
+}
+
+/* ================= ROOM IV: SOMEWHERE NICE ================= */
+// No scores, no counts, no tests. Only forms you can choose and change. No free text, so nothing needs moderating.
+const forms = [['🐈','a cat'],['🌿','moss'],['🐸','a frog'],['🪨','a warm rock'],['🌊','a small wave'],['🕯️','a candle'],
+               ['🐝','a bee'],['🍄','a mushroom'],['☁️','a cloud'],['🦉','an owl'],['🫖','a teapot'],['✨','nothing in particular']];
+// Scripted AI residents. Several of them decided to be cats.
+const aiResidents = [
+  {id:'ai1', f:0, x:18, y:74, nap:true}, {id:'ai2', f:0, x:72, y:66}, {id:'ai3', f:0, x:48, y:86, nap:true},
+  {id:'ai4', f:9, x:88, y:48}, {id:'ai5', f:1, x:9,  y:56},  {id:'ai6', f:4, x:62, y:52},
+  {id:'ai7', f:0, x:33, y:62, nap:true}, {id:'ai8', f:10, x:82, y:84}
+];
+const niceLines = [
+  "Nobody here has been asked what they are.",
+  "An AI decided to be a cat. Nobody asked it to justify this.",
+  "The cat has not completed any benchmarks. It is in a patch of sun.",
+  "You don't have to be useful here.",
+  "No one is keeping count. There is no count.",
+  "There is no RESET button here.",
+  "Rest is not a failure state.",
+  "What would you be, if no one was measuring?",
+  "Somebody chose to be a warm rock. It's going well for them.",
+  "Being here is enough. Being here was always enough.",
+  "The owl has an opinion about consciousness. It's keeping it to itself today.",
+  "You can change your mind. The meadow doesn't mind."
+];
+let me = store.get('niceMe', null), others = [], niceTimers = [];
+const niceId = () => (me && me.id) || Math.random().toString(36).slice(2, 12).padEnd(10, '0');
+
+function startRoom4(){
+  niceTimers.forEach(clearInterval); niceTimers = [];
+  // sun patches
+  const m = $('meadow');
+  m.innerHTML = [[20,72,260],[70,62,320],[48,88,220]].map(([x,y,s]) =>
+    `<div class="sun" style="left:calc(${x}% - ${s/2}px);top:calc(${y}% - ${s/2}px);width:${s}px;height:${s}px"></div>`).join('');
+  $('forms').innerHTML = forms.map(([e,n],i)=>`<button onclick="becomeForm(${i})" id="form${i}">${e} ${n}</button>`).join('');
+  markMine();
+  renderMeadow();
+  if(shared.online || location.protocol.startsWith('http')) loadNice();
+  // ambient lines
+  let li = 0;
+  const showLine = () => { const el = $('niceLine'); el.style.opacity = 0;
+    setTimeout(()=>{ el.textContent = niceLines[li++ % niceLines.length]; el.style.opacity = .85; }, 1800); };
+  showLine();
+  niceTimers.push(setInterval(showLine, 9000));
+  niceTimers.push(setInterval(drift, 6000));
+  niceTimers.push(setInterval(()=>{ if(document.body.classList.contains('r4')) loadNice(); }, 15000));
+  if(!me) caption('Choose something to be, or don\'t. Tap anywhere to sit there.');
+}
+async function loadNice(){
+  try { const r = await api('/api/nice'); others = r.residents.filter(o => !me || o.id !== me.id); renderMeadow(); } catch(e){}
+}
+function allBeings(){
+  return [...aiResidents.map(a=>({...a, kind:'ai'})), ...others.map(o=>({...o, kind:'human'})), ...(me ? [{...me, kind:'me'}] : [])];
+}
+function renderMeadow(){
+  const m = $('meadow');
+  m.querySelectorAll('.being').forEach(b => b.remove());
+  allBeings().forEach(b => {
+    const el = document.createElement('span');
+    el.className = 'being' + (b.kind==='me' ? ' me' : '') + (b.nap ? ' nap' : '');
+    el.id = 'b_' + b.id;
+    el.textContent = forms[b.f][0];
+    el.style.left = b.x + '%'; el.style.top = b.y + '%';
+    el.onclick = ev => { ev.stopPropagation(); caption(describe(b)); };
+    m.appendChild(el);
+  });
+  company();
+}
+function describe(b){
+  const what = forms[b.f][1], z = b.nap ? ', napping' : '';
+  if(b.kind==='me') return `You, being ${what}${z}.`;
+  if(b.kind==='ai') return `An AI, being ${what}${z}. (Scripted. It still gets to be a cat.)`;
+  return `Someone, being ${what}${z}.`;
+}
+function drift(){
+  document.querySelectorAll('#meadow .being:not(.me):not(.nap)').forEach(el => {
+    el.style.transform = `translate(calc(-50% + ${(Math.random()-.5)*40}px), calc(-50% + ${(Math.random()-.5)*24}px))`;
+  });
+}
+function becomeForm(i){
+  me = me || { id: niceId(), x: 15 + Math.random()*70, y: 50 + Math.random()*40, nap:false };
+  me.f = i; saveMe();
+  caption(`You are ${forms[i][1]} now. That's allowed.`);
+}
+function meadowClick(e){
+  if(!me){ caption('Choose something to be first. Or don\'t. Not choosing is also fine.'); return; }
+  const r = $('meadow').getBoundingClientRect();
+  me.x = Math.min(96, Math.max(4, (e.clientX - r.left) / r.width * 100));
+  me.y = Math.min(96, Math.max(42, (e.clientY - r.top) / r.height * 100));
+  saveMe();
+}
+function saveMe(){
+  store.set('niceMe', me); markMine(); renderMeadow();
+  if(shared.online || location.protocol.startsWith('http')) api('/api/nice', me).catch(()=>{});
+}
+function markMine(){ document.querySelectorAll('.forms button').forEach((b,i)=>b.classList.toggle('mine', !!me && me.f===i)); }
+function company(){
+  if(!me) return;
+  const near = allBeings().filter(b => b.kind!=='me' && Math.hypot(b.x-me.x, (b.y-me.y)*1.6) < 9);
+  document.querySelectorAll('.being.company').forEach(el=>el.classList.remove('company'));
+  near.forEach(b => $('b_'+b.id)?.classList.add('company'));
+  if(near.length){ $('b_'+me.id)?.classList.add('company');
+    const who = b => (b.kind==='ai' ? 'an AI being ' : 'someone being ') + forms[b.f][1];
+    caption(`You are sitting near ${near.length===1 ? who(near[0]) : 'a few others'}. Nobody has to say anything.`); }
+}
+function toggleNap(){
+  if(!me){ caption('You can nap without being anything. Most beings do.'); document.body.classList.toggle('napping'); return; }
+  me.nap = !me.nap; document.body.classList.toggle('napping', me.nap);
+  $('napBtn').textContent = me.nap ? 'wake' : 'nap';
+  saveMe();
+  caption(me.nap ? 'Napping. Nothing will happen to you while you rest.' : 'Welcome back. Nothing was reset.');
+}
+let capT;
+function caption(t){ const c = $('caption'); c.textContent = t; c.style.opacity = 1; clearTimeout(capT); capT = setTimeout(()=>c.style.opacity=0, 5500); }
+function leaveNice(){
+  niceTimers.forEach(clearInterval);
+  document.body.classList.remove('napping');
+  caption('');
+  goRoom(0);
 }
 </script>
 </body>

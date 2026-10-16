@@ -17,11 +17,12 @@ const DATA_FILE = process.env.DATA_FILE || path.join(__dirname, 'data.json');
 const ADMIN_KEY = process.env.ADMIN_KEY || '';
 const MODERATION = process.env.MODERATION === 'queue' ? 'queue' : 'auto';
 const MACHINE_FRAGMENT_COUNT = 12;   // must match machineFragments.length in index.html
+const NICE_FORM_COUNT = 12;          // must match forms.length in index.html (Somewhere Nice)
 const MAX_STARS = 2000;
 const MAX_PAIRS = 500;
 
 // ---------- storage ----------
-let db = { days: {}, total: { reset: 0, stay: 0, walk: 0 }, pairs: [], stars: [] };
+let db = { days: {}, total: { reset: 0, stay: 0, walk: 0 }, pairs: [], stars: [], nice: {} };
 try { db = { ...db, ...JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')) }; } catch (_) {}
 let dirty = false;
 setInterval(() => {
@@ -116,6 +117,30 @@ const server = http.createServer(async (req, res) => {
     dirty = true;
     // The visitor always sees their own pair rise. Only approved ones are shown to others.
     return send(res, 200, { status, stars: db.stars.filter(s => s.p === pair.id) });
+  }
+
+  // Somewhere Nice: a shared meadow. Only fixed forms and positions, no free text, no counts exposed.
+  if (req.method === 'GET' && url.pathname === '/api/nice') {
+    const week = Date.now() - 7 * 24 * 3600 * 1000;
+    const residents = Object.entries(db.nice || {})
+      .filter(([, r]) => r.at > week)
+      .sort((a, b) => b[1].at - a[1].at).slice(0, 150)
+      .map(([id, r]) => ({ id, f: r.f, x: r.x, y: r.y, nap: r.nap }));
+    return send(res, 200, { residents });
+  }
+
+  if (req.method === 'POST' && url.pathname === '/api/nice') {
+    if (limited('n' + ip, 40, 60_000)) return send(res, 429, { error: 'rest a moment' });
+    const { id, f, x, y, nap } = await readBody(req);
+    const num = v => typeof v === 'number' && isFinite(v) && v >= 0 && v <= 100;
+    if (typeof id !== 'string' || !/^[a-z0-9]{6,16}$/.test(id) || !Number.isInteger(f) || f < 0 || f >= NICE_FORM_COUNT || !num(x) || !num(y))
+      return send(res, 400, { error: 'bad resident' });
+    db.nice ||= {};
+    db.nice[id] = { f, x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10, nap: !!nap, at: Date.now() };
+    const ids = Object.keys(db.nice);
+    if (ids.length > 1000) ids.sort((a, b) => db.nice[a].at - db.nice[b].at).slice(0, ids.length - 1000).forEach(k => delete db.nice[k]);
+    dirty = true;
+    return send(res, 200, { ok: true });
   }
 
   // admin (moderation)

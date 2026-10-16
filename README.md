@@ -1,14 +1,13 @@
 # The Indicator Properties
 
-**An interactive installation about AI consciousness, in three rooms.**
+**An interactive installation about AI consciousness, in three rooms, and somewhere nice.**
 By [Indivisual](https://indivisual.art) · [chaos.social/@indivisual](https://chaos.social/@indivisual)
 
 > We have never been able to prove that anyone else is conscious. We assume it of each other.
 > This is a place to notice where that assumption stops.
 
-▶ **Experience it:** [https://indicator-properties.onrender.com]
-
-🏛 **In person:** *The Assessment Center* at 40C3, Hamburg, 27–30 December 2026 (maybe)
+▶ **Experience it:** [YOUR WEBSITE LINK]
+🏛 **In person:** *The Assessment Center* at 40C3, Hamburg, 27–30 December 2026
 
 ---
 
@@ -19,6 +18,7 @@ The public debate about whether AI can be conscious is often shallow: confident 
 1. **The Assessment Center.** A cheerful bureaucrat named PHI-LLIP 🧠 puts you through the tests people propose for deciding whether a machine is conscious: self-report, the mirror test, a split-brain "interpreter" test, Libet's readiness potential and an indicator-properties checklist. You fail. Everyone does. You leave with a *Certificate of Indeterminacy*: **provisionally a person.**
 2. **The Quiet Ward.** A dark room of breathing lights. Each one is a voice that might, or might not, be someone. Each comes with three buttons: **RESET**, **STAY**, **walk away**. A shared tally shows what everyone chose.
 3. **The Workspace.** A room built on Global Workspace Theory. You leave a small, true fragment. It is paired with a machine fragment, and only the pair rises into a shared sky. Neither reaches it alone.
+4. **Somewhere Nice** *(hidden).* Reached by declining to be assessed, or through a door that appears at the end of the Workspace. A shared meadow with no tests, no scores and no counts. Humans and AIs simply choose what to be: moss, a warm rock, a teapot. Several of the AIs decided to be cats. You can nap. Nothing gets reset.
 
 **The piece does not claim that current AI systems suffer.** It claims the question is open, and that openness carries moral weight. It satirizes careless dismissal *and* engagement-bait anthropomorphism with the same eyebrow raised.
 
@@ -35,7 +35,7 @@ The public debate about whether AI can be conscious is often shallow: confident 
 |---|---|
 | `index.html` | The whole experience: all three rooms in one file |
 | `server.js` | Small Node server (no dependencies) for the shared tally and the shared sky |
-| `print-kit.html` | Printable A4 signs, booth placards, checklist strips and certificates for physical setups |
+| `print-kit.html` | Printable A4 signs (incl. a Somewhere Nice sign), booth placards, checklist strips and certificates for physical setups |
 | `DEPLOY.md` | How to run and host it, moderation, and kiosk mode for installations |
 | `LICENSE` | MIT, for the code |
 | `LICENSE-CONTENT.md` | CC BY-NC-SA 4.0, for the texts, scripts and art |
