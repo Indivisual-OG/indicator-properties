@@ -1,0 +1,8 @@
+{
+  "name": "the-indicator-properties",
+  "version": "1.0.0",
+  "description": "An interactive installation about AI consciousness, web version",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}
