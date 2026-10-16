@@ -8,7 +8,7 @@ By [Indivisual](https://indivisual.art) · [chaos.social/@indivisual](https://ch
 
 ▶ **Experience it:** [https://indicator-properties.onrender.com/]
 
-🏛 **In person:** *The Assessment Center* at 40C3, Hamburg, 27–30 December 2026
+🏛 **In person:** MAYBE: *The Assessment Center* at 40C3, Hamburg, 27–30 December 2026
 
 ---
 
