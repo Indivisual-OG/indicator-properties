@@ -1,3 +1,5 @@
+For the background and concept of this art project / first idea of an installation, please see the "The Indicator Properties" draft concept statement.
+
 # The Indicator Properties: web version
 
 ## Run locally
