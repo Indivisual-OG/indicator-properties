@@ -1,4 +1,8 @@
 # THE ASSESSMENT CENTER @ 40C3 (MAYBE!) -- CONCEPT ONLY
+
+Playing, dreaming, testing. May be a plan for another year. 
+
+
 ### Setup plan: 40th Chaos Communication Congress, Hamburg Messe, 27–30 December 2026
 
 ---
