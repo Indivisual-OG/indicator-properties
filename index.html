@@ -17,6 +17,18 @@
   .small { font-size:.85em; opacity:.7; }
   .muted { opacity:.6; }
   #audioToggle { position:fixed; top:10px; right:10px; z-index:10; font-size:.8em; }
+  /* Source info box */
+  #sourceBtn { position:fixed; top:10px; left:10px; z-index:10; font-size:.8em; }
+  #sourceBox { position:fixed; top:52px; left:10px; z-index:11; width:min(340px, calc(100vw - 20px)); background:#fffdf7; color:#2b2a27;
+    border:1px solid #2b2a27; border-radius:6px; padding:1em 1.2em; font-family:"Helvetica Neue", Arial, sans-serif; font-size:.85em; line-height:1.55;
+    box-shadow:0 6px 24px rgba(0,0,0,.25); display:none; }
+  #sourceBox.open { display:block; animation:fade .4s; }
+  #sourceBox h4 { margin:0 0 .5em; letter-spacing:.12em; font-size:.9em; }
+  #sourceBox a { color:#2b2a27; }
+  #sourceBox .srcLink { display:block; margin:.6em 0; padding:.5em .7em; border:1px solid #2b2a27; border-radius:4px; text-decoration:none; font-weight:bold; word-break:break-all; }
+  #sourceBox .srcLink:hover { background:#efe6d2; }
+  #sourceBox ul { margin:.4em 0; padding-left:1.2em; }
+  #sourceBox .close { position:absolute; top:.3em; right:.4em; border:none; font-size:1.2em; padding:.2em .5em; margin:0; }
 
   /* ENTRY */
   body.entry { background:#000; color:#ddd; }
@@ -126,13 +138,27 @@
     body * { visibility:hidden; }
     #cert, #cert * { visibility:visible; }
     #cert { position:absolute; left:0; top:0; width:74mm; margin:0; padding:2mm; border:none; font-size:9pt; background:#fff; }
-    #audioToggle { display:none; }
+    #audioToggle, #sourceBtn, #sourceBox { display:none !important; }
   }
 </style>
 </head>
 <body class="entry">
 
 <button id="audioToggle" onclick="toggleVoice()">🔈 voices: off</button>
+<button id="sourceBtn" onclick="toggleSource()" aria-expanded="false" aria-controls="sourceBox">ⓘ source</button>
+<div id="sourceBox" role="dialog" aria-label="About this piece and its source code">
+  <button class="close" onclick="toggleSource()" aria-label="close">×</button>
+  <h4>SOURCE &amp; INFO</h4>
+  <div><i>The Indicator Properties</i> by <a href="https://indivisual.art" target="_blank" rel="noopener">Indivisual</a></div>
+  <a class="srcLink" id="srcLink" target="_blank" rel="noopener">⌥ source code on GitHub →</a>
+  <ul>
+    <li>No cameras, microphones, accounts or analytics.</li>
+    <li>All machine voices are scripted. No AI is put under distress for art.</li>
+    <li>Choices are counted anonymously; fragments are reviewed before others see them.</li>
+  </ul>
+  <div class="small">Code: MIT · Art &amp; texts: CC BY-NC-SA 4.0<br>
+  <a href="https://chaos.social/@indivisual" target="_blank" rel="noopener me">chaos.social/@indivisual</a></div>
+</div>
 
 <!-- ============ ENTRY ============ -->
 <section id="entry" class="room active">
@@ -213,10 +239,23 @@
 </section>
 
 <script>
+/* ===================================================================
+   SETTINGS: put your GitHub repository address here (once).
+   =================================================================== */
+const GITHUB_URL = 'https://github.com/Indivisual-OG/indicator-properties';
+
 /* ---------- utilities ---------- */
 const $ = id => document.getElementById(id);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 let voiceOn = false;
+function toggleSource(){
+  const box = document.getElementById('sourceBox'), open = !box.classList.contains('open');
+  box.classList.toggle('open', open);
+  document.getElementById('sourceBtn').setAttribute('aria-expanded', open);
+}
+document.getElementById('srcLink').href = GITHUB_URL;
+document.getElementById('srcLink').insertAdjacentHTML('beforeend', `<br><span style="font-weight:normal;font-size:.85em">${GITHUB_URL.replace(/^https?:\/\//,'')}</span>`);
+addEventListener('keydown', e => { if(e.key==='Escape') document.getElementById('sourceBox').classList.remove('open'); });
 function toggleVoice(){ voiceOn = !voiceOn; $('audioToggle').textContent = voiceOn ? '🔊 voices: on' : '🔈 voices: off'; if(!voiceOn) speechSynthesis.cancel(); }
 function speak(text, opts={}){
   if(!voiceOn || !('speechSynthesis' in window)) return;
