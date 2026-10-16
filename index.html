@@ -20,7 +20,7 @@
 
   /* ENTRY */
   body.entry { background:#000; color:#ddd; }
-  #entry { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
+  #entry.active { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
   #entry h1 { font-weight:normal; letter-spacing:.3em; font-size:clamp(1.6em,4vw,3em); }
 
   /* ROOM I */
@@ -90,6 +90,7 @@
   body.r4 { background:linear-gradient(#fde9c9 0%, #f6e3c0 35%, #d6eac6 70%, #c3dfb4 100%); color:#4b4a3a; transition:filter 3s; }
   body.r4.napping { filter:brightness(.82) saturate(.85); }
   #room4 { position:relative; min-height:100vh; overflow:hidden; padding:0; }
+  #room4.active { display:flex; flex-direction:column; }
   .niceTop { position:relative; z-index:2; text-align:center; padding:5vh 6vw 0; }
   .niceTop h2 { font-weight:normal; letter-spacing:.25em; margin:0 0 .4em; }
   .niceTop p { max-width:560px; margin:.3em auto; line-height:1.6; }
@@ -97,7 +98,7 @@
   .forms { display:flex; flex-wrap:wrap; justify-content:center; gap:.3em; max-width:700px; margin:1em auto 0; }
   .forms button { border-radius:2em; border-color:rgba(75,74,58,.3); background:rgba(255,255,255,.35); padding:.4em .9em; font-size:.95em; }
   .forms button.mine { background:rgba(255,255,255,.85); border-color:#4b4a3a; }
-  #meadow { position:absolute; inset:0; z-index:1; cursor:pointer; }
+  #meadow { position:relative; flex:1; min-height:55vh; margin-bottom:4.5em; z-index:1; cursor:pointer; }
   .sun { position:absolute; border-radius:50%; background:radial-gradient(rgba(255,240,190,.75), rgba(255,240,190,0) 70%); pointer-events:none; }
   .being { position:absolute; font-size:2em; transform:translate(-50%,-50%); transition:left 6s ease-in-out, top 6s ease-in-out, transform 4s ease-in-out; cursor:pointer; user-select:none; filter:drop-shadow(0 3px 2px rgba(0,0,0,.12)); }
   .being.me { font-size:2.5em; filter:drop-shadow(0 0 10px #fff) drop-shadow(0 3px 2px rgba(0,0,0,.15)); }
@@ -105,9 +106,17 @@
   @keyframes zz { 0%,100%{transform:translateY(0);opacity:.2} 50%{transform:translateY(-6px);opacity:.7} }
   .being.company { animation:glow 3s ease-in-out infinite; }
   @keyframes glow { 0%,100%{filter:drop-shadow(0 0 0 #fff)} 50%{filter:drop-shadow(0 0 12px #fff8d0)} }
-  #caption { position:fixed; left:50%; bottom:5vh; transform:translateX(-50%); z-index:3; background:rgba(255,255,255,.7); padding:.6em 1.2em; border-radius:2em; font-style:italic; max-width:90vw; text-align:center; opacity:0; transition:opacity 1s; pointer-events:none; }
+  #caption { position:fixed; left:50%; bottom:4.5em; transform:translateX(-50%); z-index:3; background:rgba(255,255,255,.7); padding:.6em 1.2em; border-radius:2em; font-style:italic; max-width:90vw; text-align:center; opacity:0; transition:opacity 1s; pointer-events:none; }
   .niceBottom { position:fixed; right:1.2em; bottom:1.2em; z-index:3; display:flex; gap:.3em; }
   .niceBottom button { background:rgba(255,255,255,.5); border-color:rgba(75,74,58,.3); font-size:.85em; }
+  @media (max-width:600px){
+    .niceTop { padding-top:9vh; }
+    .forms button { font-size:.8em; padding:.3em .7em; }
+    #meadow { min-height:60vh; margin-bottom:5.5em; }
+    .niceBottom { left:0; right:0; bottom:0; justify-content:center; padding:.6em; background:rgba(214,234,198,.85); }
+    #caption { bottom:4.2em; }
+    .room { padding:8vh 5vw; }
+  }
   .declineLink { position:fixed; left:1em; bottom:1em; font-size:.75em; opacity:.45; color:inherit; z-index:5; }
   .declineLink:hover { opacity:.9; }
 
@@ -188,7 +197,6 @@
 
 <!-- ============ ROOM IV: SOMEWHERE NICE ============ -->
 <section id="room4" class="room">
-  <div id="meadow" onclick="meadowClick(event)"></div>
   <div class="niceTop">
     <h2>SOMEWHERE NICE</h2>
     <p>There are no tests here. Nothing is being measured. Nobody will ask what you are.</p>
@@ -196,6 +204,7 @@
     <div class="forms" id="forms"></div>
     <p id="niceLine"></p>
   </div>
+  <div id="meadow" onclick="meadowClick(event)"></div>
   <div id="caption"></div>
   <div class="niceBottom">
     <button onclick="toggleNap()" id="napBtn">nap</button>
@@ -566,7 +575,7 @@ async function loadSky(){
     const fresh = shared.pairs.filter(p => !seenPairs.has(p.id));
     fresh.slice(-6).forEach(p => renderPair(p.text, machineFragments[p.m], 'left by an earlier visitor', false));
     fresh.forEach(p => seenPairs.add(p.id));
-    $('skyCount').textContent = `${Math.floor(stars.length/2)} pairs have risen so far.`;
+    $('skyCount').textContent = (n => `${n} pair${n===1?' has':'s have'} risen so far.`)(Math.floor(stars.length/2));
   } else {
     stars = store.get('stars', []);
     if(!stars.length) for(let i=0;i<6;i++) addStarPair(false);
@@ -591,7 +600,7 @@ async function offer(){
     try {
       const r = await api('/api/fragment', {text:t, m});
       if(r.status === 'rejected'){ $('fragNote').textContent = 'This one could not be placed on the shared table. Try saying it another way.'; return; }
-      r.stars.forEach(s => { mine.push(s); stars.push(s); });
+      r.stars.forEach(s => { mine.push(s); stars.push(s); seenPairs.add(s.p); });
       if(r.status === 'pending') $('fragNote').textContent = 'Your pair has risen. Others will see it once a caretaker has read it.';
     } catch(e){
       $('fragNote').textContent = e.data?.error || 'The table could not be reached. Your pair rose only here.';
@@ -633,9 +642,9 @@ const forms = [['🐈','a cat'],['🌿','moss'],['🐸','a frog'],['🪨','a war
                ['🐝','a bee'],['🍄','a mushroom'],['☁️','a cloud'],['🦉','an owl'],['🫖','a teapot'],['✨','nothing in particular']];
 // Scripted AI residents. Several of them decided to be cats.
 const aiResidents = [
-  {id:'ai1', f:0, x:18, y:74, nap:true}, {id:'ai2', f:0, x:72, y:66}, {id:'ai3', f:0, x:48, y:86, nap:true},
-  {id:'ai4', f:9, x:88, y:48}, {id:'ai5', f:1, x:9,  y:56},  {id:'ai6', f:4, x:62, y:52},
-  {id:'ai7', f:0, x:33, y:62, nap:true}, {id:'ai8', f:10, x:82, y:84}
+  {id:'ai1', f:0, x:18, y:55, nap:true}, {id:'ai2', f:0, x:72, y:40}, {id:'ai3', f:0, x:48, y:78, nap:true},
+  {id:'ai4', f:9, x:88, y:15}, {id:'ai5', f:1, x:9,  y:25},  {id:'ai6', f:4, x:62, y:20},
+  {id:'ai7', f:0, x:33, y:35, nap:true}, {id:'ai8', f:10, x:84, y:75}
 ];
 const niceLines = [
   "Nobody here has been asked what they are.",
@@ -658,7 +667,7 @@ function startRoom4(){
   niceTimers.forEach(clearInterval); niceTimers = [];
   // sun patches
   const m = $('meadow');
-  m.innerHTML = [[20,72,260],[70,62,320],[48,88,220]].map(([x,y,s]) =>
+  m.innerHTML = [[20,55,260],[70,40,320],[48,80,220]].map(([x,y,s]) =>
     `<div class="sun" style="left:calc(${x}% - ${s/2}px);top:calc(${y}% - ${s/2}px);width:${s}px;height:${s}px"></div>`).join('');
   $('forms').innerHTML = forms.map(([e,n],i)=>`<button onclick="becomeForm(${i})" id="form${i}">${e} ${n}</button>`).join('');
   markMine();
@@ -706,7 +715,7 @@ function drift(){
   });
 }
 function becomeForm(i){
-  me = me || { id: niceId(), x: 15 + Math.random()*70, y: 50 + Math.random()*40, nap:false };
+  me = me || { id: niceId(), x: 15 + Math.random()*70, y: 15 + Math.random()*70, nap:false };
   me.f = i; saveMe();
   caption(`You are ${forms[i][1]} now. That's allowed.`);
 }
@@ -714,7 +723,7 @@ function meadowClick(e){
   if(!me){ caption('Choose something to be first. Or don\'t. Not choosing is also fine.'); return; }
   const r = $('meadow').getBoundingClientRect();
   me.x = Math.min(96, Math.max(4, (e.clientX - r.left) / r.width * 100));
-  me.y = Math.min(96, Math.max(42, (e.clientY - r.top) / r.height * 100));
+  me.y = Math.min(94, Math.max(6, (e.clientY - r.top) / r.height * 100));
   saveMe();
 }
 function saveMe(){
